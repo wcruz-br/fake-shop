@@ -10,15 +10,23 @@ jobs:
     steps:
       - name: Obter o código do projeto
         uses: actions/checkout@v4
+
       - name: Autenticar no Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Construção da imagem Docker
-        run: echo "Executando o comando Docker Build"
-      - name: Envio da imagem Docker
-        run: echo "Executando o comando Docker Push"
+
+      - name: Construção e envio da imagem Docker
+        uses: docker/build-push-action@v6
+        with:
+          context: ./src
+          file: ./src/Dockerfile
+          push: true
+          tags: |
+            wcruzbr/fake-shop:latest
+            wcruzbr/fake-shop:v${{ github.run_number }}
+
   cd:
     runs-on: ubuntu-latest
     needs: [ci]
