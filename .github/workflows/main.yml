@@ -45,4 +45,4 @@ jobs:
         run: aws eks update-kubeconfig --name eks-aula
 
       - name: Deploy dos manifestos no Kubernetes
-        run: echo "Executando o comando kubectl apply"
+        run: echo kubectl apply -f .k8s/deployment.yaml
